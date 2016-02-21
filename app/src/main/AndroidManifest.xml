@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.solarpaygogo.solarpaygogoadminconsole" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity android:name=".LoginActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".menuActivity" >
+        </activity>
+        <activity android:name=".changePasswordActivity" >
+        </activity>
+        <activity android:name=".manageUserActivity" >
+        </activity>
+        <activity android:name=".registerUserActivity" >
+        </activity>
+        <activity android:name=".manageDeviceActivity" >
+        </activity>
+        <activity android:name=".registerDeviceActivity" >
+        </activity>
+        <activity android:name=".editDeviceActivity" >
+        </activity>
+        <activity android:name=".manageTransactionActivity" >
+        </activity>
+        <activity android:name=".addTransactionActivity" >
+        </activity>
+        <activity android:name=".searchDeviceActivity" >
+        </activity>
+        <activity android:name=".searchSerialNumActivity" >
+        </activity>
+    </application>
+
+</manifest>
