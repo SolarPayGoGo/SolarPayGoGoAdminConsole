@@ -86,9 +86,13 @@ public class addTransactionActivity extends AppCompatActivity {
                 try{
                     if (inputSerialNum.equals("")==false && inputHours.equals("")==false) {
                         Long.parseLong(inputSerialNum);
-                        Integer.parseInt(inputHours);
-                        Transaction transaction = new Transaction(-1, inputSerialNum, "", inputHours, currentUser.username, "", "");
-                        confirmAddingTransaction(transaction);
+                        int inputHours_int = Integer.parseInt(inputHours);
+                        if((inputHours_int <= 9999) && (inputHours_int >= 0)) {
+                            Transaction transaction = new Transaction(-1, inputSerialNum, "", inputHours, currentUser.username, "", "");
+                            checkSerialNumExist(inputSerialNum,transaction);
+                        } else {
+                            showErrorMessage("Number of Hours can not be larger than 9999 or smaller than 0");
+                        }
                     } else {
                         showErrorMessage("Please do not leave blanks");
                     }
@@ -237,6 +241,20 @@ public class addTransactionActivity extends AppCompatActivity {
                     generateActivationCode(newTransaction);
                 } else {
                     showErrorMessage("Fail to load selected User data from database");
+                }
+            }
+        });
+    }
+
+    private void checkSerialNumExist (String serialNum, final Transaction transaction){
+        DB_device_request db_device_request = new DB_device_request(this);
+        db_device_request.getDeviceInfo(serialNum, new getAllDeviceCallBack() {
+            @Override
+            public void done(ArrayList<Device> returnedDevices) {
+                if (returnedDevices != null) {
+                    confirmAddingTransaction(transaction);
+                } else {
+                    showErrorMessage("Serial Number not exist in dataBase");
                 }
             }
         });

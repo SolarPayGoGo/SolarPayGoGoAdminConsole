@@ -98,28 +98,43 @@ public class registerDeviceActivity extends AppCompatActivity {
                         timezone.equals("")||TimeUploadHH.equals("")||TimeUploadMM.equals("")){
                     showErrorMessage("Error can not leave * item/items blank");
                 } else {
-                    try{
-                        int timezoneInt = Integer.parseInt(timezone);
-                        int TimeUploadHHInt = Integer.parseInt(TimeUploadHH);
-                        int TimeUploadMMInt = Integer.parseInt(TimeUploadMM);
-                        long serialNumLong = Long.parseLong(serialNum);
-                        long devicePhoneNumLong = Long.parseLong(devicePhoneNum);
-                        long clientPhoneNumLong = Long.parseLong(clientPhoneNum);
+                    if ((serialNum.length() == 15)&&(privateKey.length() == 100)) {
+                        try {
+                            int timezoneInt = Integer.parseInt(timezone);
+                            int TimeUploadHHInt = Integer.parseInt(TimeUploadHH);
+                            int TimeUploadMMInt = Integer.parseInt(TimeUploadMM);
+                            long serialNumLong = Long.parseLong(serialNum);
+                            long devicePhoneNumLong = Long.parseLong(devicePhoneNum);
+                            long clientPhoneNumLong = Long.parseLong(clientPhoneNum);
 
-                        String currentUsername = currentUser.username;
+                            int serialNum_CheckSum = 0;
+                            for (int k = 0; k <14; k++){
+                                serialNum_CheckSum += (serialNum.charAt(k) - '0');
+                            }
+                            serialNum_CheckSum = serialNum_CheckSum % 10;
 
-                        Date currentDate = new Date();
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
-                        String currentDateTime = simpleDateFormat.format(currentDate);
+                            if (serialNum_CheckSum == (serialNum.charAt(14)- '0')) {
 
-                        Device newDevice = new Device(-1,serialNum,devicePhoneNum,privateKey,timezoneInt,
-                                clientFirstName,clientLastName,clientPhoneNum,clientEmail,APNname,APNusername,
-                                APNpassword,FTPaddress,FTPport,FTPusername,FTPpassword,FTPpath,TimeUploadHHInt,
-                                TimeUploadMMInt,currentUsername,currentDateTime,currentUsername,currentDateTime);
-                        registerNewDevice(newDevice);
+                                String currentUsername = currentUser.username;
 
-                    } catch (NumberFormatException e) {
-                        showErrorMessage("Error: Some inputs only accept numerical value!");
+                                Date currentDate = new Date();
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
+                                String currentDateTime = simpleDateFormat.format(currentDate);
+
+                                Device newDevice = new Device(-1, serialNum, devicePhoneNum, privateKey, timezoneInt,
+                                        clientFirstName, clientLastName, clientPhoneNum, clientEmail, APNname, APNusername,
+                                        APNpassword, FTPaddress, FTPport, FTPusername, FTPpassword, FTPpath, TimeUploadHHInt,
+                                        TimeUploadMMInt, currentUsername, currentDateTime, currentUsername, currentDateTime);
+                                registerNewDevice(newDevice);
+                            } else {
+                                showErrorMessage("Error: checksum error on the serial number field!");
+                            }
+
+                        } catch (NumberFormatException e) {
+                            showErrorMessage("Error: Some inputs only accept numerical value!");
+                        }
+                    } else {
+                        showErrorMessage("Error: Serial Number must be 15 digits long and Private Key must be 100 digits long!");
                     }
                 }
 
